@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:fitsSystemWindows="false"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="56dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp">
+
+        <ImageView android:src="@drawable/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="72dp"
+            android:layout_marginBottom="24dp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Enter a Workout"
+            android:gravity="center"
+
+            android:textSize="25sp"/>
+
+
+        <Spinner android:id="@+id/workout_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+            ></Spinner>
+
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/input_distance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:hint="Distance (in km)" />
+        </android.support.design.widget.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/hoursHeading"
+                android:layout_above="@+id/hours_up_button"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="Hours"
+                />
+
+
+            <TextView
+                android:id="@+id/minsHeading"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="Mins"
+                />
+            <TextView
+                android:id="@+id/secsHeading"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="Secs"
+                />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent">
+
+
+
+            <TextView
+                android:id="@+id/hoursText"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_alignLeft="@+id/textView_hours_up"
+                android:layout_centerVertical="true"
+                android:text="TextView"
+                android:textColor="#000000"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/hours_dwn_btn"
+                android:layout_width="80dp"
+                android:layout_height="100dp"
+                android:layout_below="@+id/textView_hoursdown"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/dwn_btn" />
+
+            <TextView
+                android:id="@+id/textView_hours_up"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_above="@+id/hoursText"
+                android:layout_alignLeft="@+id/hours_dwn_btn"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:text="TextView"
+                android:textColor="#D3D3D3"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/textView_hoursdown"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_alignLeft="@+id/hoursText"
+                android:layout_below="@+id/hoursText"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="14dp"
+                android:text="TextView"
+                android:textColor="#D3D3D3"
+                android:textSize="20sp" />
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="30dp"
+                android:layout_height="1dp"
+                android:layout_alignBottom="@+id/textView_hours_up"
+
+                android:layout_centerHorizontal="true"
+                android:background="#000000" />
+
+            <Button
+                android:id="@+id/hours_up_button"
+                android:layout_width="80dp"
+                android:layout_height="100dp"
+                android:layout_above="@+id/textView_hours_up"
+                android:layout_alignLeft="@+id/textView_hours_up"
+                android:layout_marginBottom="18dp"
+                android:background="@drawable/up_btn" />
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+
+                <TextView
+                    android:id="@+id/minsText"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_alignLeft="@+id/textView_mins_up"
+                    android:layout_centerVertical="true"
+                    android:text="TextView"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+                <Button
+                    android:id="@+id/mins_dwn_btn"
+                    android:layout_width="80dp"
+                    android:layout_height="100dp"
+                    android:layout_below="@+id/textView_minsdown"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/dwn_btn" />
+
+                <TextView
+                    android:id="@+id/textView_mins_up"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_above="@+id/minsText"
+                    android:layout_alignLeft="@+id/mins_dwn_btn"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="10dp"
+                    android:text="TextView"
+                    android:textColor="#D3D3D3"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textView_minsdown"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_alignLeft="@+id/minsText"
+                    android:layout_below="@+id/minsText"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="14dp"
+                    android:text="TextView"
+                    android:textColor="#D3D3D3"
+                    android:textSize="20sp" />
+
+                <View
+                    android:id="@+id/view2"
+                    android:layout_width="30dp"
+                    android:layout_height="1dp"
+                    android:layout_alignBottom="@+id/textView_mins_up"
+
+                    android:layout_centerHorizontal="true"
+                    android:background="#000000" />
+
+                <Button
+                    android:id="@+id/mins_up_button"
+                    android:layout_width="80dp"
+
+                    android:layout_height="100dp"
+                    android:layout_above="@+id/textView_mins_up"
+                    android:layout_alignLeft="@+id/textView_mins_up"
+                    android:layout_marginBottom="18dp"
+                    android:background="@drawable/up_btn" />
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <View
+                    android:id="@+id/secs_up_view"
+                    android:layout_width="30dp"
+                    android:layout_height="1dp"
+
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    />
+
+                <TextView
+                    android:id="@+id/secsText"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_alignLeft="@+id/textView_secs_up"
+                    android:layout_centerVertical="true"
+                    android:text="TextView"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+                <Button
+                    android:id="@+id/secs_dwn_btn"
+                    android:layout_width="80dp"
+                    android:layout_height="100dp"
+                    android:layout_below="@+id/textView_secsdown"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/dwn_btn" />
+
+                <TextView
+                    android:id="@+id/textView_secs_up"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_above="@+id/secsText"
+                    android:layout_alignLeft="@+id/secs_dwn_btn"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="10dp"
+                    android:text="TextView"
+                    android:textColor="#D3D3D3"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textView_secsdown"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_alignLeft="@+id/secsText"
+                    android:layout_below="@+id/secsText"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="14dp"
+                    android:text="TextView"
+                    android:textColor="#D3D3D3"
+                    android:textSize="20sp" />
+
+                <View
+                    android:id="@+id/view3"
+                    android:layout_width="30dp"
+                    android:layout_height="1dp"
+                    android:layout_alignBottom="@+id/textView_secs_up"
+                    android:layout_alignLeft="@+id/secs_up_view"
+                    android:layout_centerHorizontal="true"
+                    android:background="#000000" />
+
+                <Button
+                    android:id="@+id/secs_up_button"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/textView_secs_up"
+                    android:layout_alignLeft="@+id/textView_secs_up"
+                    android:layout_marginBottom="18dp"
+                    android:background="@drawable/up_btn" />
+
+            </RelativeLayout>
+
+
+     </LinearLayout>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_create_workout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:padding="12dp"
+            android:text="Submit"/>
+
+
+
+    </LinearLayout>
+</ScrollView>

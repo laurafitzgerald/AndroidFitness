@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">CyclingTracker</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string-array name="types_array">
+        <item>Cycle</item>
+        <item>Run</item>
+    </string-array>
+
+
+
+</resources>
