@@ -6,6 +6,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.example.laura.cyclingtracker.data.Gear;
 import com.example.laura.cyclingtracker.data.Profile;
 import com.example.laura.cyclingtracker.data.Workout;
 import com.parse.FindCallback;
@@ -29,23 +30,39 @@ public class GlobalState extends Application {
     private boolean loggedIn;
     private ArrayList<Workout> listWorkouts = new ArrayList<Workout>();
 
-
+//    @Override
     public void onCreate(){
-
         super.onCreate();
 
 
+        Parse.enableLocalDatastore(this);
+        Parse.initialize(getApplicationContext(), "K3IYGy8Ms8ACUMozyhNGPsWrSCRX5Tke4SFIzoOg", "1DUVXOASNGruzdD0OfF7BqSMi4cEwbScVF7aiDoV");
+        ParseInstallation.getCurrentInstallation().saveInBackground();
+
         ParseObject.registerSubclass(Workout.class);
         ParseUser.registerSubclass(Profile.class);
-        listWorkouts.add(new Workout());
-        Parse.enableLocalDatastore(this);
+        ParseObject.registerSubclass(Gear.class);
+/*
+        Gear gear = new Gear();
+        gear.put("Type", "Bike");
+        gear.put("Nickname", "Wheels");
+        gear.put("user_id", ParseUser.getCurrentUser());
 
-     Parse.initialize(getApplicationContext(), "K3IYGy8Ms8ACUMozyhNGPsWrSCRX5Tke4SFIzoOg", "1DUVXOASNGruzdD0OfF7BqSMi4cEwbScVF7aiDoV");
+        gear.saveEventually(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+
+
+                } else {
 
 
 
 
-       ParseInstallation.getCurrentInstallation().saveInBackground();
+                }
+            }
+        });*/
+
 
 
     }
@@ -97,9 +114,9 @@ public class GlobalState extends Application {
                         public void done(ParseException e) {
 
                             if (e != null) {
-                                Log.v("Populate local wokouts", "Failed to save bike locally");
+                                Log.v("Populate local workouts", "Failed to save workout locally");
                             } else {
-                                Log.v("Populate local workouts", "Bike saved locally");
+                                Log.v("Populate local workouts", "Workout saved locally");
                             }
                         }
                     });

@@ -12,20 +12,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.laura.cyclingtracker.R;
+import com.example.laura.cyclingtracker.data.Profile;
 import com.example.laura.cyclingtracker.helper.GlobalState;
+import com.parse.LogInCallback;
+import com.parse.ParseException;
+import com.parse.ParseUser;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class LogInActivity extends AppCompatActivity {
 
-
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
     GlobalState gs;
 
     @Bind(R.id.input_email)
-    EditText _emailText;
+    EditText _usernameText;
     @Bind(R.id.input_password)
     EditText _passwordText;
     @Bind(R.id.btn_login)
@@ -39,10 +42,20 @@ public class LogInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
 
+        gs = (GlobalState) getApplication();
+
+        if(ParseUser.getCurrentUser()!=null){
+
+
+            Intent mainIntent = new Intent(LogInActivity.this, MainActivity.class);
+            Toast.makeText(getApplicationContext(), "Logging In...", Toast.LENGTH_SHORT).show();
+            startActivity(mainIntent);
+
+
+        }
+
         setContentView(R.layout.activity_log_in);
         ButterKnife.bind(this);
-
-        gs = (GlobalState) getApplication();
 
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
@@ -64,6 +77,14 @@ public class LogInActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+
+
+
+    }
+
 
     public void login() {
         Log.d(TAG, "Login");
@@ -75,38 +96,63 @@ public class LogInActivity extends AppCompatActivity {
 
         _loginButton.setEnabled(false);
 
-        final ProgressDialog progressDialog = new ProgressDialog(LogInActivity.this);
+        final ProgressDialog progressDialog = new ProgressDialog(LogInActivity.this);;
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
 
-        String email = _emailText.getText().toString();
+        String username = _usernameText.getText().toString();
         String password = _passwordText.getText().toString();
 
-        // TODO: Implement your own authentication logic here.
+        if (gs.connectedToInternet(this) == false) {
+            Toast.makeText(this, "Check your internet connection and try again", Toast.LENGTH_LONG).show();
+        } else {
 
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        // On complete call either onLoginSuccess or onLoginFailed
-                        onLoginSuccess();
-                        // onLoginFailed();
+            Profile.logInInBackground(username,password, new LogInCallback() {
+
+                @Override
+                public void done(ParseUser user, ParseException e) {
+                    if (user != null) {
+
+                        new android.os.Handler().
+
+                                postDelayed(
+                                        new Runnable() {
+                                            public void run() {
+                                                // On complete call either onLoginSuccess or onLoginFailed
+                                                onLoginSuccess();
+                                                // onLoginFailed();
+                                                progressDialog.dismiss();
+                                            }
+                                        }
+
+                                        , 3000);
+
+
+                    }else{
+                        e.printStackTrace();
+                        onLoginFailed();
                         progressDialog.dismiss();
+
                     }
-                }, 3000);
+                }
+
+            });
+
+
+        }
     }
 
-    public void onLoginSuccess() {
+        public void onLoginSuccess() {
         _loginButton.setEnabled(true);
-        gs.setLoggedIn(true);
+
         Intent intent = new Intent(LogInActivity.this, MainActivity.class);
         startActivity(intent);
-        //finish();
+        finish();
     }
 
     public void onLoginFailed() {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
-        gs.setLoggedIn(false);
         _loginButton.setEnabled(true);
     }
 
@@ -114,15 +160,9 @@ public class LogInActivity extends AppCompatActivity {
     public boolean validate() {
         boolean valid = true;
 
-        String email = _emailText.getText().toString();
+        String email = _usernameText.getText().toString();
         String password = _passwordText.getText().toString();
 
-        if (email.matches("") || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            _emailText.setError("enter a valid email address");
-            valid = false;
-        } else {
-            _emailText.setError(null);
-        }
 
         if (password.matches("") || password.length() < 4 || password.length() > 10) {
             _passwordText.setError("between 4 and 10 alphanumeric characters");

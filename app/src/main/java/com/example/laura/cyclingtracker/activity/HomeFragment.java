@@ -9,8 +9,15 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.laura.cyclingtracker.R;
+import com.example.laura.cyclingtracker.data.Workout;
 import com.example.laura.cyclingtracker.helper.GlobalState;
 import com.example.laura.cyclingtracker.helper.ListActivitiesAdapter;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -22,6 +29,8 @@ public class HomeFragment extends Fragment{
     public static  ListActivitiesAdapter adapter;
     private View rootView;
     private ListView workoutListView;
+    List<Workout> workoutList;
+
 
     GlobalState gs;
 
@@ -47,23 +56,25 @@ public class HomeFragment extends Fragment{
         gs = (GlobalState) getActivity().getApplication();
 
 
-//        ParseQuery<Workout> query=new ParseQuery<Workout>("Workout");
-//        query.whereEqualTo("userId", ParseUser.getCurrentUser());
-//        if(gs.connectedToInternet(getActivity())== false){
-//
-//            query.fromLocalDatastore();
-//
-//        }
-//        query.findInBackground(new FindCallback<Workout>() {
-//            @Override
-//            public void done(List<Workout> objects, ParseException e) {
-//                adapter = new ListActivitiesAdapter(getActivity(), gs);
-//                workoutListView = (ListView) getActivity().findViewById(R.id.workout_list);
-//                workoutListView.setAdapter(adapter);
-//            }
-//        });
-//
-                adapter = new ListActivitiesAdapter(getActivity(), gs, gs.getListWorkouts());
+        ParseQuery<Workout> query=new ParseQuery<Workout>("Workout");
+        query.whereEqualTo("user_id", ParseUser.getCurrentUser());
+        if(gs.connectedToInternet(getActivity())== false){
+
+            query.fromLocalDatastore();
+
+        }
+        query.findInBackground(new FindCallback<Workout>() {
+            @Override
+            public void done(List<Workout> objects, ParseException e) {
+                workoutList = objects;
+                if(e!=null ){
+
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        adapter = new ListActivitiesAdapter(getActivity(), gs, gs.getListWorkouts());
         workoutListView = (ListView) getActivity().findViewById(R.id.workout_list);
         workoutListView.setAdapter(adapter);
 

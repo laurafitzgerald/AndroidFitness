@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.laura.cyclingtracker.R;
@@ -13,9 +12,7 @@ import com.example.laura.cyclingtracker.data.Workout;
 
 import java.util.List;
 
-/**
- * Created by laura on 05/12/15.
- */
+
 public class ListActivitiesAdapter extends BaseAdapter {
 
     Context context;
@@ -55,6 +52,13 @@ public class ListActivitiesAdapter extends BaseAdapter {
         if (convertView == null) {
             viewHolder = new ViewHolder();
             convertView = this.inflater.inflate(R.layout.list_activities, parent, false);
+            viewHolder.workoutType = (TextView) convertView.findViewById(R.id.workoutTimeText);
+            viewHolder.location = (TextView) convertView.findViewById(R.id.workoutLocationText);
+            viewHolder.distance = (TextView) convertView.findViewById(R.id.workoutDistanceText);
+            viewHolder.time = (TextView) convertView.findViewById(R.id.workoutTimeText);
+            viewHolder.speed = (TextView) convertView.findViewById(R.id.workoutTimeText);
+
+
             convertView.setTag(viewHolder);
         } else{
             viewHolder = (ViewHolder) convertView.getTag();
@@ -62,6 +66,15 @@ public class ListActivitiesAdapter extends BaseAdapter {
         }
 
             Workout workout = workoutList.get(position);
+        viewHolder.workoutType.setText(workout.getType());
+        viewHolder.distance.setText(workout.getDistance());
+        viewHolder.location.setText(workout.getLocation());
+        String time = "";
+        time += workout.getHours() + ":";
+        time += workout.getMins() + ":";
+        time += workout.getSecs();
+        viewHolder.time.setText(time);
+        //viewHolder.speed.setText();
 
 
 
@@ -72,12 +85,11 @@ public class ListActivitiesAdapter extends BaseAdapter {
 
 
     static class ViewHolder {
-        TextView nickname_editable;
-        TextView serial_editable;
-        TextView make_editable;
-        ImageView imgBike_editable;
-        ImageView editIcon;
-        ImageView deleteIcon;
+        TextView workoutType;
+        TextView location;
+        TextView distance;
+        TextView time;
+        TextView speed;
 
     }
 }

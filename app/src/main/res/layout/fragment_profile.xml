@@ -5,47 +5,57 @@
     android:layout_height="match_parent" >
 
 
-
-
-
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="39dp"
-        android:layout_marginRight="25dp" >
-
-
-        <ImageView
-            android:id="@+id/profileImageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="25dp"
-            />
-
+    <LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
         <TextView
             android:id="@+id/userNameView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/profileImageView"
             android:layout_marginTop="15dp"
             android:text="Username: "
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/userNameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Text "
             android:textAppearance="?android:attr/textAppearanceSmall"
             />
 
-    </RelativeLayout>
+    </LinearLayout>
 
-
-    <ListView
-        android:id="@+id/bikeList"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="200dp">
+    <ListView
+        android:id="@+id/gear_list"
+        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:layout_width="wrap_content"
 
+        />
+    </ScrollView>
+
+
+
+
+
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_logout"
+        android:layout_gravity="right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:padding="12dp"
+        android:text="Logout"/>
 
 
 

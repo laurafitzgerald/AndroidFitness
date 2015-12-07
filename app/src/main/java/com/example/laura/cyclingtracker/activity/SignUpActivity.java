@@ -19,9 +19,7 @@ import com.parse.SignUpCallback;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-/**
- * Created by laura on 16/11/15.
- */
+
 public class SignUpActivity extends AppCompatActivity{
 
     private static final String TAG = "SignupActivity";
@@ -130,7 +128,7 @@ public class SignUpActivity extends AppCompatActivity{
     public void registerUser(){
 
 
-        if(gs.connectedToInternet(SignUpActivity.this)){
+        if(gs.connectedToInternet(SignUpActivity.this) == false){
 
             Toast.makeText(SignUpActivity.this,"Check your internet connection and try again",Toast.LENGTH_LONG).show();
         }else{
@@ -144,13 +142,14 @@ public class SignUpActivity extends AppCompatActivity{
                 @Override
                 public void done(ParseException e) {
                     if(!(e==null)){
-
+                        e.printStackTrace();
                         onSignupFailed();
 
                     }else{
 
 
                         final ProgressDialog progressDialog = new ProgressDialog(SignUpActivity.this);
+
                         progressDialog.setIndeterminate(true);
                         progressDialog.setMessage("Creating Account...");
                         progressDialog.show();

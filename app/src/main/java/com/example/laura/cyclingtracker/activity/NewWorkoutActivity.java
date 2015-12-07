@@ -1,12 +1,15 @@
 package com.example.laura.cyclingtracker.activity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +18,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.laura.cyclingtracker.R;
+import com.example.laura.cyclingtracker.data.Gear;
+import com.example.laura.cyclingtracker.data.Workout;
+import com.example.laura.cyclingtracker.helper.GearAdapter;
+import com.example.laura.cyclingtracker.helper.GlobalState;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -32,6 +46,14 @@ public class NewWorkoutActivity extends Fragment {
     int minsStart=0;
     int minsEnd=59;
 
+    GlobalState gs;
+    List<Gear> gearList;
+    ArrayAdapter<CharSequence> adapter;
+    GearAdapter gearAdapter;
+
+
+    @Bind(R.id.input_location)
+    TextView _location;
 
     @Bind(R.id.hours_dwn_btn)
     Button _hours_dwn_btn;
@@ -79,6 +101,9 @@ public class NewWorkoutActivity extends Fragment {
     @Bind(R.id.workout_type)
     Spinner _workoutType;
 
+    @Bind(R.id.gear)
+    Spinner _gear;
+
     @Bind(R.id.btn_create_workout)
     Button _createWorkoutButton;
     private View rootView;
@@ -97,11 +122,13 @@ public class NewWorkoutActivity extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        gs = (GlobalState) getActivity().getApplication();
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.types_array, android.R.layout.simple_spinner_item);
+        adapter = ArrayAdapter.createFromResource(getActivity(), R.array.types_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         _workoutType.setAdapter(adapter);
 
+        updateGear();
 
         _hoursup.setText("0");
         _hoursdown.setText("2");
@@ -173,10 +200,54 @@ public class NewWorkoutActivity extends Fragment {
             }
         });
 
+        _workoutType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                updateGear();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+
+
+        });
+
 
     }
 
+    public void updateGear(){
 
+
+
+        Resources res = getResources();
+        Gear.findInBackground(ParseUser.getCurrentUser(), new FindCallback<Gear>() {
+            @Override
+            public void done(List<Gear> gear, ParseException e) {
+
+                gearList = new ArrayList<Gear>();
+                for (Gear g : gear) {
+
+                    if(_workoutType.getSelectedItem().toString().equals("Cycle")) {
+                        if(g.getType().equals("Bike"))
+                            gearList.add(g);
+
+                    }else{
+
+                        if(g.getType().equals("Runners")){
+                            gearList.add(g);
+                        }
+                    }
+                }
+
+                Resources res = getResources();
+                gearAdapter = new GearAdapter(getActivity(), R.layout.gear_spinner_item, gearList, res);
+                _gear.setAdapter(gearAdapter);
+            }
+        });
+    }
 
 
 
@@ -303,9 +374,47 @@ public class NewWorkoutActivity extends Fragment {
         progressDialog.setMessage("Creating New Workout...");
         progressDialog.show();
 
-        //String type = _workoutType.getSelectedItem().toString();
-        //Double distance = _distanceText.getText();
+        String type = _workoutType.getSelectedItem().toString();
+        String distancestr = _distanceText.getText().toString();
+        Double distance = Double.parseDouble(distancestr);
+        String hours = _hoursText.getText().toString();
+        String mins = _minsText.getText().toString();
+        String secs = _secsText.getText().toString();
+        String location = _location.getText().toString();
 
+
+
+        Workout wo = Workout.create(Workout.class);
+        wo.put("Type", type);
+        wo.put("distance", distance);
+        wo.put("user_id", ParseUser.getCurrentUser());
+        wo.put("Hours", hours);
+        wo.put("Mins", mins);
+        wo.put("Location", location);
+        wo.put("Secs", secs);
+        gs.populateWorkoutList();
+        wo.saveInBackground();
+        progressDialog.dismiss();
+
+
+        wo.saveEventually(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+
+
+                } else {
+
+                    Toast.makeText(getActivity(), "Workout added", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(getActivity(), MainActivity.class);
+                    getActivity().finish();
+                    startActivity(i);
+                    progressDialog.dismiss();
+
+
+                }
+            }
+        });
 
 
 
@@ -334,7 +443,7 @@ public class NewWorkoutActivity extends Fragment {
         //TODO check that all the values are valid
 
         String distance = _distanceText.getText().toString();
-        //llaurString type = _workoutType.getSelectedItem().toString();
+        //String type = _workoutType.getSelectedItem().toString();
         //int hour = _timeText.getHour();
         //int minute = _timeText.getMinute();
 

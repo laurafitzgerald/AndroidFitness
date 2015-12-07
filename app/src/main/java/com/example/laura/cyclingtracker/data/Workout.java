@@ -38,6 +38,28 @@ public class Workout extends ParseObject {
 
 
 
+    public String getType() {
+        return getString("Type");
+    }
+
+    public String getMins() {
+        return getString("Mins");
+    }
+
+    public String getHours(){
+        return getString("Hours");
+    }
+
+    public String getSecs(){
+        return getString("Secs");
+    }
+    public String getLocation(){
+        return getString("Location");
+    }
+
+    public String getDistance(){
+        return getString("distance");
+    }
 
 
 
