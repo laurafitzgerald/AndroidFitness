@@ -72,14 +72,15 @@ public class ProfileFragment extends Fragment {
             @Override
             public void done(List<Gear> objects, ParseException e) {
                 gearList = objects;
-                Toast.makeText(getActivity(), "size of gear list" +String.valueOf(objects.size()) , Toast.LENGTH_LONG).show();
-                Log.v("Size of gear list: ", String.valueOf(objects.size()) );
+                Toast.makeText(getActivity(), "size of gear list" + String.valueOf(objects.size()), Toast.LENGTH_LONG).show();
+                Log.v("Size of gear list: ", String.valueOf(objects.size()));
+                Log.v("Size of gear list: ", String.valueOf(gearList.size()));
+                adapter = new ListGearAdapter(getActivity(), gearList);
+
+                list.setAdapter(adapter);
             }
         });
-        Log.v("Size of gear list: ", String.valueOf(gearList.size()));
-        adapter = new ListGearAdapter(getActivity(), gearList);
 
-        list.setAdapter(adapter);
 
 
 
