@@ -22,6 +22,7 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -39,7 +40,7 @@ public class ProfileFragment extends Fragment {
 
     public static  ListGearAdapter adapter;
 
-    List<Gear> gearList;
+    List<Gear> gearList = new ArrayList<Gear>();
 
     GlobalState gs;
 
@@ -75,6 +76,7 @@ public class ProfileFragment extends Fragment {
                 Log.v("Size of gear list: ", String.valueOf(objects.size()) );
             }
         });
+        Log.v("Size of gear list: ", String.valueOf(gearList.size()));
         adapter = new ListGearAdapter(getActivity(), gearList);
 
         list.setAdapter(adapter);

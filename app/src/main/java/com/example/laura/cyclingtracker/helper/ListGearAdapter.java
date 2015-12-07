@@ -2,6 +2,7 @@ package com.example.laura.cyclingtracker.helper;
 
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +65,7 @@ public class ListGearAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
+        Log.d("Custom adapter reached", "ListGearAdapter");
         Gear gear = gearList.get(position);
         viewHolder.gearType.setText(gear.getType());
         viewHolder.gearNickname.setText(gear.getNickname());
