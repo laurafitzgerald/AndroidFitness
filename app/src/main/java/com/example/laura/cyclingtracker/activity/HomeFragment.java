@@ -67,16 +67,12 @@ public class HomeFragment extends Fragment{
             @Override
             public void done(List<Workout> objects, ParseException e) {
                 workoutList = objects;
-                if(e!=null ){
+                adapter = new ListActivitiesAdapter(getActivity(), gs, gs.getListWorkouts());
+                list.setAdapter(adapter);
 
-                    e.printStackTrace();
-                }
             }
         });
 
-        adapter = new ListActivitiesAdapter(getActivity(), gs, gs.getListWorkouts());
-        workoutListView = (ListView) getActivity().findViewById(R.id.workout_list);
-        workoutListView.setAdapter(adapter);
 
     }
 
