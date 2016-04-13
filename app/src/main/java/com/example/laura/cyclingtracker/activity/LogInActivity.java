@@ -12,16 +12,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.laura.cyclingtracker.R;
-import com.example.laura.cyclingtracker.data.Profile;
 import com.example.laura.cyclingtracker.helper.GlobalState;
-import com.parse.LogInCallback;
-import com.parse.ParseException;
-import com.parse.ParseUser;
+import com.example.laura.cyclingtracker.helper.LogInTask;
+import com.example.laura.cyclingtracker.helper.MySettings;
+
+import org.json.JSONObject;
+
+import java.util.Observable;
+import java.util.Observer;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class LogInActivity extends AppCompatActivity {
+public class LogInActivity extends AppCompatActivity implements Observer {
 
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
@@ -41,18 +44,38 @@ public class LogInActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-
         gs = (GlobalState) getApplication();
 
-        if(ParseUser.getCurrentUser()!=null){
 
+       //MySettings.save(this, "1459772803808");
+
+        /*
+
+        new TypeToken<ArrayList<Bike>>(){}.getType();
+        RetrieveTask rt =  new RetrieveTask(this, "bikes", MySettings.getSessionKey(this), gs.bikes,  new TypeToken<ArrayList<Bike>>(){}.getType(), null);
+
+        rt.attach(this);
+        rt.execute();
+
+
+        Log.v("INFO LogIn bikes", gs.bikes.toString());
+
+        */
+
+        String session = MySettings.getSessionKey(this);
+        //Log.v("INFO LIA SK L", session.length() + "");
+        //Log.v("INFO LIA SK", session);
+
+        if( session !=null && session.length()!=0){
 
             Intent mainIntent = new Intent(LogInActivity.this, MainActivity.class);
             Toast.makeText(getApplicationContext(), "Logging In...", Toast.LENGTH_SHORT).show();
             startActivity(mainIntent);
-
-
         }
+
+
+
+
 
         setContentView(R.layout.activity_log_in);
         ButterKnife.bind(this);
@@ -65,7 +88,7 @@ public class LogInActivity extends AppCompatActivity {
             }
         });
 
-        _signupLink.setOnClickListener(new View.OnClickListener(){
+        _signupLink.setOnClickListener(new View.OnClickListener() {
 
 
             @Override
@@ -108,36 +131,26 @@ public class LogInActivity extends AppCompatActivity {
             Toast.makeText(this, "Check your internet connection and try again", Toast.LENGTH_LONG).show();
         } else {
 
-            Profile.logInInBackground(username,password, new LogInCallback() {
+            //make request to api to log in using details
+            //save the session key to be checked later
 
-                @Override
-                public void done(ParseUser user, ParseException e) {
-                    if (user != null) {
-
-                        new android.os.Handler().
-
-                                postDelayed(
-                                        new Runnable() {
-                                            public void run() {
-                                                // On complete call either onLoginSuccess or onLoginFailed
-                                                onLoginSuccess();
-                                                // onLoginFailed();
-                                                progressDialog.dismiss();
-                                            }
-                                        }
-
-                                        , 3000);
+            JSONObject jObj = new JSONObject();
+            try {
+                jObj.put("username", username);
+                jObj.put("password", password);
+            }  catch (Exception e) {
+            System.out.println("Error:" + e);
 
 
-                    }else{
-                        e.printStackTrace();
-                        onLoginFailed();
-                        progressDialog.dismiss();
 
-                    }
-                }
+            }
 
-            });
+
+            LogInTask lit =  new LogInTask(this, jObj);
+
+            lit.attach(this);
+            lit.execute();
+
 
 
         }
@@ -174,5 +187,17 @@ public class LogInActivity extends AppCompatActivity {
         return valid;
     }
 
+    @Override
+    public void update(Observable observable, Object data) {
+
+        gs.session = (String) data;
+        Intent intent = new Intent(LogInActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
+
+        //Log.v("Observer.update", data.toString());
+        //_signupLink.setText(data.toString());
+
+    }
 }
 

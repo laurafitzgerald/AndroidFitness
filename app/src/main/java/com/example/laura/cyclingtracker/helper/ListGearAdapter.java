@@ -10,22 +10,19 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.laura.cyclingtracker.R;
-import com.example.laura.cyclingtracker.data.Gear;
-
-import java.util.List;
 
 public class ListGearAdapter extends BaseAdapter {
 
 
     private Context context;
-    public List<Gear> gearList;
+
     LayoutInflater inflater;
     ViewHolder viewHolder;
 
 
-    public ListGearAdapter(Context context, List<Gear> gear) {
+    public ListGearAdapter(Context context ) {
 
-        this.gearList = gear;
+
         this.context = context;
 
 
@@ -40,6 +37,7 @@ public class ListGearAdapter extends BaseAdapter {
     @Override
     public Object getItem(int position) {
         return null;
+
     }
 
     @Override
@@ -66,9 +64,9 @@ public class ListGearAdapter extends BaseAdapter {
         }
 
         Log.d("Custom adapter reached", "ListGearAdapter");
-        Gear gear = gearList.get(position);
-        viewHolder.gearType.setText(gear.getType());
-        viewHolder.gearNickname.setText(gear.getNickname());
+        //Gear gear = gearList.get(position);
+        //viewHolder.gearType.setText(gear.getType());
+        //viewHolder.gearNickname.setText(gear.getNickname());
 
         return convertView;
 

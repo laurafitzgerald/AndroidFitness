@@ -14,39 +14,39 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.laura.cyclingtracker.R;
-import com.example.laura.cyclingtracker.data.Gear;
+import com.example.laura.cyclingtracker.data.Bike;
 import com.example.laura.cyclingtracker.helper.GlobalState;
 import com.example.laura.cyclingtracker.helper.ListGearAdapter;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
+import com.example.laura.cyclingtracker.helper.MySettings;
+import com.example.laura.cyclingtracker.helper.RetrieveTask;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements Observer {
     private View rootView;
 
 
     @Bind(R.id.btn_logout) Button _logout;
-    @Bind(R.id.userNameText)
+    @Bind(R.id.usernameView)
     TextView username;
-    @Bind(R.id.gear_list)
-    ListView list;
+    @Bind(R.id.bike_list)
+    ListView listView;
 
     public static  ListGearAdapter adapter;
 
-    List<Gear> gearList = new ArrayList<Gear>();
 
     GlobalState gs;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+
+        gs = (GlobalState) getActivity().getApplication();
+        RetrieveTask<Bike> rt = new RetrieveTask<>(this.getActivity(), "bikes", gs.getSession(), Bike.class, null);
 
 
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
@@ -59,27 +59,9 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState){
 
         gs = (GlobalState) getActivity().getApplication();
-        username.setText(ParseUser.getCurrentUser().getUsername());
+        //username.setText(ParseUser.getCurrentUser().getUsername());
 
-        ParseQuery<Gear> query=new ParseQuery<Gear>("Gear");
-        query.whereEqualTo("user_id", ParseUser.getCurrentUser());
-        if(gs.connectedToInternet(getActivity())== false){
 
-            query.fromLocalDatastore();
-
-        }
-        query.findInBackground(new FindCallback<Gear>() {
-            @Override
-            public void done(List<Gear> objects, ParseException e) {
-                gearList = objects;
-                Toast.makeText(getActivity(), "size of gear list" + String.valueOf(objects.size()), Toast.LENGTH_LONG).show();
-                Log.v("Size of gear list: ", String.valueOf(objects.size()));
-                Log.v("Size of gear list: ", String.valueOf(gearList.size()));
-                adapter = new ListGearAdapter(getActivity(), gearList);
-
-                list.setAdapter(adapter);
-            }
-        });
 
 
 
@@ -88,7 +70,8 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                ParseUser.logOut();
+                MySettings.save(getActivity(), "");
+
                 Toast.makeText(getActivity(), "Logging Out...", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), LogInActivity.class);
                 startActivity(intent);
@@ -99,6 +82,16 @@ public class ProfileFragment extends Fragment {
         });
 
 
+
+    }
+
+    @Override
+    public void update(Observable observable, Object data) {
+
+
+
+        Log.v("Profile Fragment.update", data.toString());
+        //_signupLink.setText(data.toString());
 
     }
 

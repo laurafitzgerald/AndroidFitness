@@ -1,6 +1,5 @@
 package com.example.laura.cyclingtracker.activity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,10 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.laura.cyclingtracker.R;
-import com.example.laura.cyclingtracker.data.Profile;
 import com.example.laura.cyclingtracker.helper.GlobalState;
-import com.parse.ParseException;
-import com.parse.SignUpCallback;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -25,7 +21,6 @@ public class SignUpActivity extends AppCompatActivity{
     private static final String TAG = "SignupActivity";
 
     GlobalState gs;
-    private Profile user;
 
     @Bind(R.id.input_name) EditText _nameText;
     @Bind(R.id.input_email) EditText _emailText;
@@ -42,7 +37,7 @@ public class SignUpActivity extends AppCompatActivity{
         setContentView(R.layout.signup_activity);
         ButterKnife.bind(this);
 
-        user = new Profile();
+
 
 
         _signupButton.setOnClickListener(new View.OnClickListener() {
@@ -133,44 +128,7 @@ public class SignUpActivity extends AppCompatActivity{
             Toast.makeText(SignUpActivity.this,"Check your internet connection and try again",Toast.LENGTH_LONG).show();
         }else{
 
-            user.setUsername(_nameText.getText().toString());
-            user.setEmail(_emailText.getText().toString());
-            user.setPassword(_passwordText.getText().toString());
 
-            user.pinInBackground();
-            user.signUpInBackground(new SignUpCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if(!(e==null)){
-                        e.printStackTrace();
-                        onSignupFailed();
-
-                    }else{
-
-
-                        final ProgressDialog progressDialog = new ProgressDialog(SignUpActivity.this);
-
-                        progressDialog.setIndeterminate(true);
-                        progressDialog.setMessage("Creating Account...");
-                        progressDialog.show();
-
-
-                        new android.os.Handler().postDelayed(
-                                new Runnable() {
-                                    public void run() {
-                                        onSignupSuccess();
-                                        progressDialog.dismiss();
-                                    }
-                                }, 3000);
-
-
-
-                    }
-
-
-
-                }
-            });
 
 
         }
