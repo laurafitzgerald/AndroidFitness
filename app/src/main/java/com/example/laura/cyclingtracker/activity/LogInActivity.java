@@ -29,6 +29,7 @@ public class LogInActivity extends AppCompatActivity implements Observer {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
     GlobalState gs;
+    String username;
 
     @Bind(R.id.input_email)
     EditText _usernameText;
@@ -67,7 +68,7 @@ public class LogInActivity extends AppCompatActivity implements Observer {
         //Log.v("INFO LIA SK", session);
 
         if( session !=null && session.length()!=0){
-
+            gs.setSession(session);
             Intent mainIntent = new Intent(LogInActivity.this, MainActivity.class);
             Toast.makeText(getApplicationContext(), "Logging In...", Toast.LENGTH_SHORT).show();
             startActivity(mainIntent);
@@ -124,7 +125,7 @@ public class LogInActivity extends AppCompatActivity implements Observer {
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
 
-        String username = _usernameText.getText().toString();
+        username = _usernameText.getText().toString();
         String password = _passwordText.getText().toString();
 
         if (gs.connectedToInternet(this) == false) {
@@ -190,6 +191,7 @@ public class LogInActivity extends AppCompatActivity implements Observer {
     @Override
     public void update(Observable observable, Object data) {
 
+        gs.currentUser = username;
         gs.session = (String) data;
         Intent intent = new Intent(LogInActivity.this, MainActivity.class);
         startActivity(intent);

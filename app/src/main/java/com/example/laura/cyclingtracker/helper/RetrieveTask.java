@@ -25,7 +25,7 @@ import java.util.Observer;
 /**
  * Created by laura on 06/04/16.
  */
-public class RetrieveTask<T> extends AsyncTask<Object, Void, ArrayList<T>>  {
+public class RetrieveTask<T> extends AsyncTask<Object, Void, ArrayList<T>> {
 
 
 
@@ -34,8 +34,8 @@ public class RetrieveTask<T> extends AsyncTask<Object, Void, ArrayList<T>>  {
     private HttpURLConnection urlConnection;
     private BufferedReader bufferedReader;
     private final String PROTOCOL = "http";
-    private final String HOST = "10.0.3.2";
-    private final int PORT = 8000;
+    private final String HOST = "api.itsmybike.io";
+    private final int PORT = 80;
     private String mFile;
     private String mXAuth;
     private Type mClazz;

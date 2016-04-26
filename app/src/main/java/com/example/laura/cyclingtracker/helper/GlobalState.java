@@ -19,6 +19,7 @@ public class GlobalState extends Application {
     public String session;
     private Double currentLat;
     private Double currentLng;
+    public String currentUser;
         //http://10.2.3.2:8000
     public Double selectedLat;
     public Double selectedLng;

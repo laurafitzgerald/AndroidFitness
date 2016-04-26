@@ -3,6 +3,6 @@
 <item name="white" type = "color">#FFF</item>
     <item name ="yellow" type ="color">#FFDD85</item>
     <item name ="black" type ="color">#000</item>
-
+    <color name="locationcolor">#ff7f7f </color>
 
 </resources>

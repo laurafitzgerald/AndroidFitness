@@ -15,11 +15,13 @@ import android.widget.Toast;
 
 import com.example.laura.cyclingtracker.R;
 import com.example.laura.cyclingtracker.data.Bike;
+import com.example.laura.cyclingtracker.helper.GetBikeTask;
 import com.example.laura.cyclingtracker.helper.GlobalState;
 import com.example.laura.cyclingtracker.helper.ListGearAdapter;
 import com.example.laura.cyclingtracker.helper.MySettings;
-import com.example.laura.cyclingtracker.helper.RetrieveTask;
+import com.google.gson.reflect.TypeToken;
 
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -32,11 +34,15 @@ public class ProfileFragment extends Fragment implements Observer {
 
     @Bind(R.id.btn_logout) Button _logout;
     @Bind(R.id.usernameView)
-    TextView username;
+    TextView usernameView;
+    @Bind(R.id.locView)
+    TextView locationView;
+
     @Bind(R.id.bike_list)
-    ListView listView;
+    ListView bikeListView;
 
     public static  ListGearAdapter adapter;
+
 
 
     GlobalState gs;
@@ -46,11 +52,20 @@ public class ProfileFragment extends Fragment implements Observer {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
         gs = (GlobalState) getActivity().getApplication();
-        RetrieveTask<Bike> rt = new RetrieveTask<>(this.getActivity(), "bikes", gs.getSession(), Bike.class, null);
+
+       GetBikeTask rt = new GetBikeTask(this.getActivity(), gs.getSession(), null, gs, new TypeToken<ArrayList<Bike>>(){}.getType());
+        rt.attach(this);
+        rt.execute();
+        //gs.bikes.add(new Bike("abc123", "white", 13, "Giant", "Avail", "Wheelie",  "Racing Bike",  "Laura"));
+
 
 
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         ButterKnife.bind(this, view);
+
+        adapter = new ListGearAdapter(this.getActivity(), gs.bikes);
+        bikeListView.setAdapter(adapter);
+
         return view;
     }
 
@@ -61,9 +76,8 @@ public class ProfileFragment extends Fragment implements Observer {
         gs = (GlobalState) getActivity().getApplication();
         //username.setText(ParseUser.getCurrentUser().getUsername());
 
-
-
-
+        usernameView.setText(gs.currentUser);
+        locationView.setText("Waterford");
 
 
         _logout.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +94,10 @@ public class ProfileFragment extends Fragment implements Observer {
 
             }
         });
+        //Log.v("Bikes", gs.bikes.toString());
 
+        adapter = new ListGearAdapter(this.getActivity(), gs.bikes);
+        bikeListView.setAdapter(adapter);
 
 
     }
@@ -89,8 +106,12 @@ public class ProfileFragment extends Fragment implements Observer {
     public void update(Observable observable, Object data) {
 
 
+        gs.bikes = (ArrayList<Bike>) data;
 
         Log.v("Profile Fragment.update", data.toString());
+        adapter.notifyDataSetChanged();
+
+
         //_signupLink.setText(data.toString());
 
     }

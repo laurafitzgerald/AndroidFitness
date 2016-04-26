@@ -28,9 +28,9 @@ public class LogInTask<T> extends AsyncTask<Object, Void, String> {
     private HttpURLConnection urlConnection;
     private BufferedReader bufferedReader;
     private final String PROTOCOL = "http";
-    private final String HOST = "10.0.3.2";
+    private final String HOST = "a08047f5a028211e682ef02b2adee9a0-835752032.eu-central-1.elb.amazonaws.com";
     //"192.168.0.14";
-    private final int PORT = 8000;
+    private final int PORT = 80;
     private final String FILE = "sessions";
     private JSONObject mBody;
 

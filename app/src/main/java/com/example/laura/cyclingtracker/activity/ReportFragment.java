@@ -92,22 +92,13 @@ public class ReportFragment extends Fragment implements Observer {
         //get the bikes here
 
         Resources res = getResources();
-        adapter = new BikeAdapter(getActivity(), R.layout.bike_spinner_item, finalBikes, res);
+        adapter = new BikeAdapter(getActivity(), R.layout.bike_spinner_item, gs.bikes, res);
         spinner.setAdapter(adapter);
 
-        gl = (GridLayout) getActivity().findViewById(R.id.lat_lng_grid);
 
-
-        editlat = (EditText) getActivity().findViewById(R.id.latitudeInput);
-        editlng = (EditText) getActivity().findViewById(R.id.longitudeInput);
 
         input = (RadioButton) getActivity().findViewById(R.id.radioInputLocation);
         useCurrent = (RadioButton) getActivity().findViewById(R.id.radioCurrentLocation);
-
-
-        gl.setEnabled(false);
-        editlat.setEnabled(false);
-        editlng.setEnabled(false);
 
         radioGroup = (RadioGroup) getActivity().findViewById(R.id.lat_lng_radiogroup);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {

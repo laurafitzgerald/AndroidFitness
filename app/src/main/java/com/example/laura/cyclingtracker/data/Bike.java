@@ -17,19 +17,29 @@ public class Bike {
         protected double frame_size;
         protected String type;
         protected String color;
+        protected String serial_number;
 
-
-
-    protected String serial_number;
 
     public Bike(){
 
 
     }
-
+    public Bike(String serial_number,String color, double frame_size, String make, String model, String nickname, String type, String username){
+        this.serial_number = serial_number;
+        this.color = color;
+        this.frame_size = frame_size;
+        this.make = make;
+        this.model = model;
+        this.nickname = nickname;
+        this.type = type;
+        this.username = username;
+    }
 
     public String getSerial_number() {
         return serial_number;
+    }
+    public void setSerial_number(String serial_number) {
+        this.serial_number = serial_number;
     }
 
     public String getColor() {

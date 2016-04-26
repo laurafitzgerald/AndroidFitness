@@ -37,4 +37,6 @@ dependencies {
     //compile 'com.parse:parse-android:1.11.0'
     compile 'com.google.code.gson:gson:2.2.4'
     compile files('libs/fit.jar')
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:1.9.5'
 }

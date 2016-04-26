@@ -10,6 +10,9 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.laura.cyclingtracker.R;
+import com.example.laura.cyclingtracker.data.Bike;
+
+import java.util.ArrayList;
 
 public class ListGearAdapter extends BaseAdapter {
 
@@ -18,12 +21,18 @@ public class ListGearAdapter extends BaseAdapter {
 
     LayoutInflater inflater;
     ViewHolder viewHolder;
+    GlobalState gs;
+    ArrayList<Bike> list;
 
 
-    public ListGearAdapter(Context context ) {
 
-
+    public ListGearAdapter(Context context, ArrayList<Bike> list ) {
+        super();
+        Log.v("INFO", "BikeListAdapter creates");
         this.context = context;
+        this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.list = list;
+        Log.v("Bike list in adapter", list.toString());
 
 
     }
@@ -31,25 +40,29 @@ public class ListGearAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 0;
+        Log.v("Info", "get count called " + list.size());
+        return list.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        Log.v("Infor", "get itme called " + position);
+        return list.get(position);
 
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        Log.v("Infor", "get itemid called" + position);
+        return position;
     }
 
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         if (convertView == null) {
             viewHolder = new ViewHolder();
-            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            //inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.gear_list_item, parent, false);
 
             viewHolder.gearNickname = (TextView) convertView.findViewById(R.id.gearTypeText);
@@ -64,9 +77,9 @@ public class ListGearAdapter extends BaseAdapter {
         }
 
         Log.d("Custom adapter reached", "ListGearAdapter");
-        //Gear gear = gearList.get(position);
-        //viewHolder.gearType.setText(gear.getType());
-        //viewHolder.gearNickname.setText(gear.getNickname());
+        Bike bike = list.get(position);
+        viewHolder.gearType.setText(bike.getType());
+        viewHolder.gearNickname.setText(bike.getNickname());
 
         return convertView;
 
